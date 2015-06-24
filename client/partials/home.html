@@ -6,17 +6,18 @@
 			<div class="col-md-12 col-sm-12 col-xs-12">
 				<form class="form-inline" role="form" name="addNew" ng-submit="addNew.$valid && addCustomer(newCustomer)">
 						<h2>Add to Wait List</h2>
+						<p ng-show="callStatus">{{callStatus}}</p>
 				    <div class="form-group" ng-class="{'has-success': newCustomer.name, 'has-error': !newCustomer.name}">
 				      <label for="name">Name:</label>
 				      <input type="text" class="form-control input-sm" ng-model="newCustomer.name" ng-pattern="onlyLetters" name="name" id="name" placeholder="Name" required>
 				    </div>
-				    <div class="form-group" ng-class="{'has-success': newCustomer.phone, 'has-error': !newCustomer.phone}">
+				    <div class="form-group">
 				      <label for="pwd">Number:</label>
-				      <input type="text" class="form-control input-sm" id="number" placeholder="Phone Number" ng-model="newCustomer.phone" ng-pattern="onlyNumbers" ng-minlength="10" required>
+				      <input type="text" class="form-control input-sm" id="number" placeholder="Phone Number" ng-model="newCustomer.phone" ng-pattern="onlyNumbers">
 				    </div>
 				     <div class="radio">
-				      <label><input type="radio" name="optradio" ng-model="newCustomer.callType" value="text" required>Text</label>
-				      <label><input type="radio" name="optradio" ng-model="newCustomer.callType" value="call" required>Call</label>
+				      <label><input type="radio" name="optradio" ng-model="newCustomer.callType" value="text">Text</label>
+				      <label><input type="radio" name="optradio" ng-model="newCustomer.callType" value="call">Call</label>
 				    </div>
 				    <div class="form-group" ng-class="{'has-success': newCustomer.size, 'has-error': !newCustomer.size}">
 				      <label for="pwd">Party Size:</label>
@@ -40,16 +41,17 @@
 					</div>
 					<thead>
 						<tr>
+							<th>ID</th>
 							<th>Name</th>
+							<th>Party</th>
 							<th>Number</th>
-							<th>Size</th>
 							<th>Waited</th>
 							<th>Action</th>
 							<th>Stand By</th>
 							<th>Check In</th>
 							<th>Notes</th>
 							<th>Remove</th>
-							<th>Edit</th>
+							<!-- <th>Edit</th> -->
 						</tr>
 					</thead>
 					<tbody>
@@ -57,16 +59,18 @@
 
 
 						<tr ng-repeat="customer in customers" class="danger">
+							<td>{{$index + 1}}</td>
 							<td>{{customer.name}}</td>
+							<td>{{customer.size}}</td>
 							<td>{{customer.phone}}</td>
-							<td>5</td>
-							<td>32 min</td>
+							<td><span>{{getTimeWaited(customer.startTime, customer.waitTime)}}</span></td>
+							<!-- <td ng-bind="getTimeWaited(customer.startTime, customer.waitTime)">{{customer.startTime}} min</td> -->
 							<td><input type="submit" ng-click="test_function(test)" value="Call/Text" class="btn btn-default"></td>
 							<td>5 min</td>
 							<td><input type="submit" value="Check In" class="btn btn-default"></td>
 							<td>{{customer.note}}</td>
 							<td><input type="submit" value="Remove" class="btn btn-danger"></td>
-							<td>
+						<!-- 	<td>
 								<div class="onoffswitch">
 							    <input type="checkbox" ng-click="edit()" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch">
 							    <label class="onoffswitch-label" for="myonoffswitch">
@@ -74,7 +78,7 @@
 						        <span class="onoffswitch-switch"></span>
 							    </label>
 								</div>
-							</td>
+							</td> -->
 						</tr>
 
 				

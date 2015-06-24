@@ -32,7 +32,21 @@ var routes = require('./config/routes.js')(app);
 // app.set('port', 3000);
 
 // starts listening
-app.listen(3000, function() {
+var server = app.listen(3000, function() {
 	console.log(3000);
+});
+
+var io = require("socket.io").listen(server);
+io.sockets.on("connection", function(socket){
+
+		
+
+	console.log('sockets on');
+
+	function checkTime(){
+		io.emit('checkTime');
+	}
+	setInterval(checkTime, 10000);
+
 })
 

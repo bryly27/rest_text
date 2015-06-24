@@ -15,8 +15,8 @@ table.config(function($routeProvider, $locationProvider){
 		.when('/', {
 			templateUrl: 'partials/home.html',
 		})
-		.when('/news',{
-			templateUrl: '../partials/news.html',
+		.when('/reserved',{
+			templateUrl: '../static/xml/reserved.xml',
 		})
 		.otherwise({
 			redirectTo: '/'

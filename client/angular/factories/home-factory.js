@@ -3,14 +3,27 @@ table.factory('homeFactory', function($http) {
 
 
 	factory.getTodaysCustomers = function(callback){
-		$http.get('/home/getTodaysCustomers').success(function(results){
+		$http.get("/home/getTodaysCustomers").success(function(results){
 			callback(results);
 		})
 	}
 
 
 	factory.addCustomer = function(data, callback){
-		$http.post('/home/addCustomer', data).success(function(results){
+		data.name = data.name.replace(/\w\S*/g, function(txt){
+		  return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+		});
+		if(data.phone){
+			data.phone = "+1" + data.phone;
+		};
+		data.completed = false;
+		$http.post("/home/addCustomer", data).success(function(results){
+			callback(results);
+		})
+	}
+
+	factory.updateWaitTime = function(callback){
+		$http.post("/home/updateWaitTime").success(function(){
 			callback();
 		})
 	}
@@ -50,35 +63,6 @@ table.factory('homeFactory', function($http) {
 	// 	});
 	// };
 
-	// factory.get_news = function(callback){
-	// 	$http.get('/news/get_news').success(function(results){
-	// 		callback(results);
-	// 	});
-	// };
-
-	// factory.delete_news = function(data, callback){
-	// 	$http.post('/news/delete_news', data).success(function(results){
-	// 		callback(results);
-	// 	});
-	// };
-
-	// factory.add_blog = function(data, callback){
-	// 	$http.post('/admin/add_blog', data).success(function(results){
-	// 		callback(results);
-	// 	});
-	// };
-
-	// factory.get_blogs = function(callback){
-	// 	$http.get('/news/get_blogs').success(function(results){
-	// 		callback(results);
-	// 	});
-	// };
-
-	// factory.delete_blog = function(data, callback){
-	// 	$http.post('/news/delete_blog', data).success(function(results){
-	// 		callback(results);
-	// 	});
-	// };
 
 
 

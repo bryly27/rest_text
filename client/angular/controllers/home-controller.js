@@ -1,5 +1,5 @@
-table.controller('homeController', function($scope, $location, $route, homeFactory, localStorageService, $sce) {
-
+table.controller('homeController', function($scope, $location, $route, homeFactory, localStorageService) {
+var socket = io.connect();
 	// $scope.admin_user = localStorageService.get('current_user');
 
 	// if(!localStorageService.get('current_user')){
@@ -8,6 +8,9 @@ table.controller('homeController', function($scope, $location, $route, homeFacto
 	// 	$location.path('/admin_home');
 	// }
   // var edit_button = false;
+  // console.log(socket);
+
+
 
   getTodaysCustomers();
 
@@ -23,16 +26,30 @@ table.controller('homeController', function($scope, $location, $route, homeFacto
 
 
   $scope.addCustomer = function(data){
-    data.name = data.name.replace(/\w\S*/g, function(txt){
-      return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-    });
-    data.phone = "+" + data.phone;
-    data.completed = false;
-    homeFactory.addCustomer(data, function(){
+    homeFactory.addCustomer(data, function(results){
+      // console.log(results);
       $scope.newCustomer = null;
+      $scope.callStatus = results.callStatus;
       getTodaysCustomers();
-
     })
+  }
+
+  socket.on('checkTime', function(){
+    console.log('checking');
+    homeFactory.updateWaitTime(function(results){
+      getTodaysCustomers();
+    })
+  })
+
+  $scope.getTimeWaited = function(startTime, waitTime){
+    console.log('here');
+    console.log('start time', startTime);
+    console.log('wait time', waitTime);
+    var date1 = new Date(startTime);
+    var date2 = new Date(waitTime);
+    var diff = Math.abs(date1 - date2);
+    var minutes = Math.floor((diff/1000)/60);
+    return minutes;
   }
 
   // $scope.register = function(data){
