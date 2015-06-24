@@ -1,0 +1,21 @@
+
+	
+.header {
+	background-color: #2580bc;
+}
+
+body {
+	background-color: #222120;
+}
+
+#main_title {
+	color: white;
+}
+
+#main_menu a {
+	color: white;
+}
+
+#content {
+	margin-top: 70px;
+}

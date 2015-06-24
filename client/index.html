@@ -1,0 +1,89 @@
+<html>
+<head>
+	<title>Table Wait</title>
+	<meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name='description' content='A simple table waiting application for restaurants to use. Take restaurant service to a whole new level. With technology on the rise, instead of passing out vibrators or yelling out names or numbers, why not text them when customers tables are ready. Check out the simple user interface and start thinking about how efficient it would be to use this service.'>
+	<meta name="keywords" content="restuarant, waiting, service, hospitality">
+	<meta name="author" content="Nend Media LLC">
+  <!-- angular -->
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.8/angular.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.5/angular-route.min.js"></script>
+	<script type="text/javascript" src="angular/app.js"></script>
+	<script type="text/javascript" src="angular/controllers/home-controller.js"></script>
+	<script type="text/javascript" src="angular/factories/home-factory.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-local-storage/0.1.5/angular-local-storage.min.js"></script>
+	<!-- jquery -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+	<!-- bootstrap -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+	<link rel="stylesheet" type="text/css" href="static/css/styles.css">
+	<link rel="stylesheet" type="text/css" href="static/bootstrap-switch-master/dist/css/bootstrap3/bootstrap-switch.css">
+	<link rel="stylesheet" type="text/css" href="static/bootstrap-switch-master/dist/js/bootstrap-switch.js">
+	<script type="text/javascript" src="static/bootstrap-switch-master/dist/js/bootstrap-switch.js"></script>
+	<base href="/">
+</head>
+<body>
+	<div ng-app='table_wait'>
+		<!-- nav bar -->
+			<nav class="navbar navbar-default navbar-fixed-top">
+				<div class='header'>
+			    <div class="container">
+			        <!-- Brand and toggle get grouped for better mobile display -->
+			        <div class="navbar-header page-scroll">
+			            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+			                <span class="sr-only">Toggle navigation</span>
+			                <span class="icon-bar"></span>
+			                <span class="icon-bar"></span>
+			                <span class="icon-bar"></span>
+			            </button>
+			            <a class="navbar-brand page-scroll" id="main_title" href="/kais">Table Wait</a>
+			        </div>
+
+			        <!-- Collect the nav links, forms, and other content for toggling -->
+			        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+			            <ul class="nav navbar-nav navbar-right" id="main_menu">
+			                <li class="hidden">
+			                    <a href=""></a>
+			                </li>
+			                <li class='top_buttons'>
+			                    <a class="page-scroll" href="/home">Home</a>
+			                </li>
+			                <li class='top_buttons'>
+			                    <a class="page-scroll" href="/reservations">Reservations</a>
+			                </li>
+			                <li class='top_buttons'>
+			                    <a class="page-scroll" href="/completed">Completed</a>
+			                </li>
+			                <li class='top_buttons'>
+			                    <a class="page-scroll" href="/Analytics">Analytics</a>
+			                </li>
+
+			            </ul>
+			        </div>
+			        <!-- /.navbar-collapse -->
+			    </div>
+			  </div>
+			    <!-- /.container-fluid -->
+			</nav>
+		<!-- end nav bar -->
+		
+		<!-- load partials -->
+		<div id="content" ng-view=''>
+		</div>
+	</div>	
+	<script type="text/javascript-lazy">
+		// $("[name='my-checkbox']").bootstrapSwitch();
+		// $("#toggle").focus(function(){
+		// 	console.log('clicked');
+		// })
+
+
+</script>
+
+
+</body>
+</html>
