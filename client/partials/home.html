@@ -74,7 +74,7 @@
 							<!-- <td ng-bind="getTimeWaited(customer.startTime, customer.waitTime)">{{customer.startTime}} min</td> -->
 							<td ng-show="!customer.standByStartTime"><input type="submit" ng-show="customer.status !== 'complete' " ng-click="startStandBy(customer)" value="Call/Text" class="btn btn-warning"></td>
 							<td ng-show="customer.standByStartTime"><input type="submit" ng-show="customer.status !== 'complete' " ng-click="undoStandBy(customer)"value="Undo" class="btn btn-warning"></td>
-							<td><span ng-show="customer.standByStartTime">{{getStandByTime(customer.standByStartTime, customer.standByWaitTime)}} min</span></td>
+							<td><span ng-show="customer.standByStartTime">{{getStandByTime(customer.standByStartTime, customer.standByWaitTime)}} mins</span></td>
 							<td ng-show="customer.status !== 'complete'"><input type="submit" ng-click="checkIn(customer)" value="Check In" class="btn btn-success"></td>
 							<td ng-show="customer.status === 'complete'"><input type="submit" ng-click="undoCheckIn(customer)" value="Undo" class="btn btn-success"></td>
 							<td>{{customer.note}}</td>
