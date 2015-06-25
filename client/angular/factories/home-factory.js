@@ -16,7 +16,9 @@ table.factory('homeFactory', function($http) {
 		if(data.phone){
 			data.phone = "+1" + data.phone;
 		};
-		data.completed = "waiting";
+		data.show = true;
+		data.completed = false;
+		data.status = "waiting";
 		$http.post("/home/addCustomer", data).success(function(results){
 			callback(results);
 		})
@@ -45,41 +47,34 @@ table.factory('homeFactory', function($http) {
 			callback();
 		})
 	}
-	// factory.register = function(data, callback){
-	// 	$http.post('/users/register', data).success(function(results){
-	// 		callback(results);
-	// 	});
-	// };
 
-	// factory.login = function(data, callback){
-	// 	$http.post('/users/login', data).success(function(results){
-	// 		callback(results);
-	// 	});
-	// };
+	factory.undoCheckIn = function(data, callback){
+		$http.post("/home/undoCheckIn", data).success(function(){
+			callback();
+		})
+	}
 
-	// factory.add_con = function(data, callback){
-	// 	$http.post('/admin/add_con', data).success(function(results){
-	// 		callback(results);
-	// 	});
-	// };
+	factory.removeCustomer = function(data, callback){
+		$http.post("/home/removeCustomer", data).success(function(){
+			callback();
+		})
+	}
 
-	// factory.get_cons = function(callback){
-	// 	$http.get('/news/get_cons').success(function(results){
-	// 		callback(results);
-	// 	});
-	// };
+	factory.undoRemove = function(data, callback){
+		$http.post("/home/undoRemove", data).success(function(){
+			callback();
+		})
+	}
 
-	// factory.delete_con = function(data, callback){
-	// 	$http.post('/admin/delete_con', data).success(function(results){
-	// 		callback(results);
-	// 	});
-	// };
+	factory.getAverageTime = function(callback){
+		$http.get("/home/getAverageTime").success(function(results){
+			callback(results);
+		})
+	}
 
-	// factory.add_news = function(data, callback){
-	// 	$http.post('/admin/add_news', data).success(function(results){
-	// 		callback(results);
-	// 	});
-	// };
+
+
+
 
 
 

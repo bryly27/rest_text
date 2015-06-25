@@ -41,7 +41,7 @@ io.sockets.on("connection", function(socket){
 
 		
 
-	console.log('sockets on');
+	// console.log('sockets on');
 
 	function checkTime(){
 		io.emit('checkTime');

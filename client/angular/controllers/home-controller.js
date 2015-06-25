@@ -1,12 +1,13 @@
 table.controller('homeController', function($scope, $location, $route, homeFactory, localStorageService) {
-var socket = io.connect();
+  var socket = io.connect();
 
   getTodaysCustomers();
+  getAverageWaitTime();
 
   function getTodaysCustomers(){
     homeFactory.getTodaysCustomers(function(results){
       $scope.customers = results;
-      console.log(results);
+      // console.log(results);
     })
   }; 
 
@@ -23,7 +24,7 @@ var socket = io.connect();
   };
 
   socket.on('checkTime', function(){
-    console.log('checking');
+    // console.log('checking');
     homeFactory.updateWaitTime(function(results){
       getTodaysCustomers();
     })
@@ -41,7 +42,7 @@ var socket = io.connect();
   };
 
   $scope.getStandByTime = function(startTime, waitTime){
-    console.log('hello there');
+    // console.log('hello there');
     var date1 = new Date(startTime);
     var date2 = new Date(waitTime);
     var diff = Math.abs(date1 - date2);
@@ -53,7 +54,7 @@ var socket = io.connect();
   $scope.startStandBy = function(data){
     console.log(data);
     homeFactory.startStandBy(data, function(results){
-      console.log('ljdklfjsdlf', results);
+      // console.log('ljdklfjsdlf', results);
       getTodaysCustomers();
     })
   };
@@ -67,20 +68,55 @@ var socket = io.connect();
   $scope.checkIn = function(data){
     homeFactory.checkIn(data, function(){
       getTodaysCustomers();
+      getAverageWaitTime();
     })
-  }
+  };
 
-  // $scope.add_con = function(data){
-  // 	admin_factory.add_con(data,function(results){
-  //     $route.reload();
-  // 	});
-  // };
+  $scope.undoCheckIn = function(data){
+    homeFactory.undoCheckIn(data, function(){
+      // getTodaysCustomers();
+      homeFactory.startStandBy(data, function(results){
+      // console.log('ljdklfjsdlf', results);
+        getTodaysCustomers();
+        getAverageWaitTime();
+      })
+    })
+  };
 
-  // $scope.con = {url_link: 'http://'};
+  $scope.removeCustomer = function(data){
+    homeFactory.removeCustomer(data, function(){
+      getTodaysCustomers();
+    })
+  };
 
-  // admin_factory.get_cons(function(results){
-  // 	$scope.cons = results;
-  // });
+  $scope.undoRemove = function(data){
+    homeFactory.undoRemove(data, function(){
+      getTodaysCustomers();
+    })
+  };
+
+
+  function getAverageWaitTime(){
+    homeFactory.getAverageTime(function(results){
+      // console.log('results', results);
+      var sum = 0;
+      var count = results.length;
+      for(i in results){
+        var date1 = new Date(results[i].startTime);
+        var date2 = new Date(results[i].waitTime);
+        var diff = Math.abs(date1 - date2);
+        var minutes = Math.floor((diff/1000)/60);
+        sum += minutes;
+      }
+
+      var average = Math.floor(sum/count);
+      // console.log(average);
+      $scope.averageTime = average;
+    })
+  };
+
+
+
 
   // $scope.delete_con = function(data){
   // 	admin_factory.delete_con(data, function(results){
@@ -115,23 +151,7 @@ var socket = io.connect();
   //   });
   // };
 
-  // admin_factory.get_blogs(function(results){
-  //   $scope.blogs = results;
-  // });
 
-  // $scope.delete_blog = function(data){
-  //   admin_factory.delete_blog(data, function(results){
-  //     $route.reload();
-  //   });
-  // };
-
-  // $scope.video_link = function(data){
-  //   return data;
-  // };
-
-  // $scope.convert_html = function(data){
-  //   return $sce.trustAsHtml(data);
-  // };
 
 
 

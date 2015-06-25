@@ -5,38 +5,45 @@
 		<div class="row">
 			<div class="col-md-12 col-sm-12 col-xs-12">
 				<form class="form-inline" role="form" name="addNew" ng-submit="addNew.$valid && addCustomer(newCustomer)">
-						<h2>Add to Wait List</h2>
-						<p ng-show="callStatus">{{callStatus}}</p>
-				    <div class="form-group" ng-class="{'has-success': newCustomer.name, 'has-error': !newCustomer.name}">
-				      <label for="name">Name:</label>
-				      <input type="text" class="form-control input-sm" ng-model="newCustomer.name" ng-pattern="onlyLetters" name="name" id="name" placeholder="Name" required>
-				    </div>
-				    <div class="form-group">
-				      <label for="pwd">Number:</label>
-				      <input type="text" class="form-control input-sm" id="number" placeholder="Phone Number" ng-model="newCustomer.phone" ng-pattern="onlyNumbers">
-				    </div>
-				     <div class="radio">
-				      <label><input type="radio" name="optradio" ng-model="newCustomer.callType" value="text">Text</label>
-				      <label><input type="radio" name="optradio" ng-model="newCustomer.callType" value="call">Call</label>
-				    </div>
-				    <div class="form-group" ng-class="{'has-success': newCustomer.size, 'has-error': !newCustomer.size}">
-				      <label for="pwd">Party Size:</label>
-				      <select class="form-control input-sm" ng-model="newCustomer.size" id="size" placeholder="Party Size" required>
-				          <option ng-repeat="i in [] | range:11" ng-if='i > 0'>{{i}}</option>
-				          <option>11+</option>
-				      </select>
-				    </div>
-				    <div class="form-group">
-				      <label for="pwd">Notes</label>
-							<input type="text" class="form-control input-sm" id="notes" placeholder="Notes" ng-model="newCustomer.note">
-				    </div>
+					<h2 class="text-muted">Add to Wait List</h2>
+					<p ng-show="callStatus">{{callStatus}}</p>
+			    <div class="form-group" ng-class="{'has-success': newCustomer.name, 'has-error': !newCustomer.name}">
+			      <label for="name">Name:</label>
+			      <input type="text" class="form-control input-sm" ng-model="newCustomer.name" ng-pattern="onlyLetters" name="name" id="name" placeholder="Name" required>
+			    </div>
+			    <div class="form-group">
+			      <label for="pwd">Number:</label>
+			      <input type="text" class="form-control input-sm" id="number" placeholder="Phone Number" ng-model="newCustomer.phone" ng-pattern="onlyNumbers">
+			    </div>
+			     <div class="radio">
+			      <label><input type="radio" name="optradio" ng-model="newCustomer.callType" value="text">Text</label>
+			      <label><input type="radio" name="optradio" ng-model="newCustomer.callType" value="call">Call</label>
+			    </div>
+			    <div class="form-group" ng-class="{'has-success': newCustomer.size, 'has-error': !newCustomer.size}">
+			      <label for="pwd">Party Size:</label>
+			      <select class="form-control input-sm" ng-model="newCustomer.size" id="size" placeholder="Party Size" required>
+			          <option ng-repeat="i in [] | range:11" ng-if='i > 0'>{{i}}</option>
+			          <option>11+</option>
+			      </select>
+			    </div>
+			    <div class="form-group">
+			      <label for="pwd">Notes</label>
+						<input type="text" class="form-control input-sm" id="notes" placeholder="Notes" ng-model="newCustomer.note">
+			    </div>
 
-				    <input type="submit" class="btn btn-default btn-sm" value="add" ng-disabled="addNew.$invalid">
-				  </form>
+			    <input type="submit" class="btn btn-default btn-sm" value="add" ng-disabled="addNew.$invalid">
+			  </form>
+
+
+
 				<table class="table table-hover">
 					<div class="form-inline">
 						<div class="form-group">
-							<h2>Wait List</h2>
+							<h2 class="text-muted">Wait List</h2>
+							<h4 class="text-danger">Average Wait Time {{averageTime}} mins</h4>
+						</div>
+						<div class="form-group pull-right">
+							<input class="form-control input-sm" type="text" ng-model="searchName" placeholder="Search">
 						</div>
 					</div>
 					<thead>
@@ -44,51 +51,40 @@
 							<th>ID</th>
 							<th>Name</th>
 							<th>Party</th>
-							<th>Number</th>
-							<th>Waited</th>
+							<th>Phone</th>
+							<th>Wait Time</th>
 							<th>Action</th>
 							<th>Stand By</th>
 							<th>Check In</th>
 							<th>Notes</th>
 							<th>Remove</th>
-							<!-- <th>Edit</th> -->
 						</tr>
 					</thead>
 					<tbody>
 
 
 
-						<tr ng-repeat="customer in customers" ng-class="{'danger': customer.completed === 'waiting', 'warning': customer.completed === 'standBy', 'success': customer.completed === 'complete'}">
+						<tr ng-repeat="customer in customers | filter:searchName" ng-show="customer.show === true" ng-class="{'danger': customer.status === 'waiting', 'warning': customer.status === 'standBy', 'success': customer.status === 'complete'}">
 							<td>{{$index + 1}}</td>
 							<td>{{customer.name}}</td>
 							<td>{{customer.size}}</td>
 							<td>{{customer.phone}}</td>
+							<!-- <td>{{getTimeWaited(customer)}} mins</td> -->
 							<td>{{getTimeWaited(customer.startTime, customer.waitTime)}} mins</td>
 							<!-- <td ng-bind="getTimeWaited(customer.startTime, customer.waitTime)">{{customer.startTime}} min</td> -->
-							<td ng-show="!customer.standByStartTime"><input type="submit" ng-click="startStandBy(customer)" value="Call/Text" class="btn btn-default"></td>
-							<td ng-show="customer.standByStartTime"><input type="submit" ng-click="undoStandBy(customer)"value="Undo" class="btn btn-warning"></td>
+							<td ng-show="!customer.standByStartTime"><input type="submit" ng-show="customer.status !== 'complete' " ng-click="startStandBy(customer)" value="Call/Text" class="btn btn-warning"></td>
+							<td ng-show="customer.standByStartTime"><input type="submit" ng-show="customer.status !== 'complete' " ng-click="undoStandBy(customer)"value="Undo" class="btn btn-warning"></td>
 							<td><span ng-show="customer.standByStartTime">{{getStandByTime(customer.standByStartTime, customer.standByWaitTime)}} min</span></td>
-							<td><input type="submit" ng-click="checkIn(customer)" value="Check In" class="btn btn-success"></td>
+							<td ng-show="customer.status !== 'complete'"><input type="submit" ng-click="checkIn(customer)" value="Check In" class="btn btn-success"></td>
+							<td ng-show="customer.status === 'complete'"><input type="submit" ng-click="undoCheckIn(customer)" value="Undo" class="btn btn-success"></td>
 							<td>{{customer.note}}</td>
-							<td><input type="submit" value="Remove" class="btn btn-danger"></td>
-						<!-- 	<td>
-								<div class="onoffswitch">
-							    <input type="checkbox" ng-click="edit()" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch">
-							    <label class="onoffswitch-label" for="myonoffswitch">
-						        <span class="onoffswitch-inner"></span>
-						        <span class="onoffswitch-switch"></span>
-							    </label>
-								</div>
-							</td> -->
+							<td><input type="submit" ng-click="removeCustomer(customer)" value="Remove" class="btn btn-danger"></td>
 						</tr>
 
 				
 					</tbody>
 				</table>
 			</div>
-		<!-- 	<div class="col-md-4">
-				
-			</div> -->
 		</div>
 
 

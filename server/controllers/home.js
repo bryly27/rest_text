@@ -83,10 +83,18 @@ module.exports = (function() {
 		  today.setHours(0,0,0,0);
 		  var tomorrow = new Date(today.getTime() + 24 * 60 * 60 * 1000);
 
-		  Customers.update({$or:[{completed:"waiting"}, {completed:"standBy"}], startTime:{$gte:today, $lt: tomorrow}}, 
-		  	{$set: {waitTime: now, standByWaitTime: now}}, {multi: true}, function(err, results){
+		  // Customers.update({$or:[{status:"waiting"}, {status:"standBy"}], startTime:{$gte:today, $lt: tomorrow}}, 
+		  // 	{$set: {waitTime: now, standByWaitTime: now}}, {multi: true}, function(err, results){
+		  // 	if(err){
+		  // 		console.log('error', err);
+		  // 	}else{
+		  // 		res.json();
+		  // 	}
+		  // })
+
+		  Customers.update({$and:[{$or:[{status:"waiting"}, {status:"standBy"}]}, {startTime:{$gte:today, $lt: tomorrow}}, {show:true}]}, {$set: {waitTime: now, standByWaitTime: now}}, {multi: true}, function(err, results){
 		  	if(err){
-		  		console.log('error', err);
+		  		console.log("error", err);
 		  	}else{
 		  		res.json();
 		  	}
@@ -134,11 +142,10 @@ module.exports = (function() {
 
 			function update(){
 				var now = new Date();
-				Customers.update({_id: req.body._id}, {$set: {standByStartTime: now, completed:"standBy"}}, function(err, results){
+				Customers.update({_id: req.body._id}, {$set: {standByStartTime: now, status:"standBy"}}, function(err, results){
 					if(err){
 						console.log('error', err);
 					}else{
-						// console.log(results);
 						res.json(result);
 					}
 				})
@@ -146,25 +153,68 @@ module.exports = (function() {
 		},
 
 		undoStandBy: function(req, res){
-			Customers.update({_id: req.body._id}, {$unset: {standByStartTime: ""}}, {$set:{completed:"waiting"}}, function(err, results){
+			Customers.update({_id: req.body._id}, {$set:{status:"waiting"}, $unset: {standByStartTime: ""}}, function(err, results){
 				if(err){
 					console.log("error", err);
 				}else{
-					console.log(results);
 					res.json();
 				}
 			})
 		}, 
 
 		checkIn: function(req, res){
-			Customers.update({_id: req.body._id}, {$set: {completed: "complete"}}, function(err, results){
+			Customers.update({_id: req.body._id}, {$set: {status: "complete", completed: true}}, function(err, results){
 				if(err){
 					console.log("error", err);
 				}else{
 					res.json();
 				}
 			})
+		}, 
+
+		undoCheckIn: function(req, res){
+			Customers.update({_id: req.body._id}, {$set: {status: "standBy", completed: false}}, function(err, results){
+				if(err){
+					console.log("error", err);
+				}else{
+					res.json();
+				}
+			})
+		},
+
+		removeCustomer: function(req, res){
+			Customers.update({_id: req.body._id}, {$set: {show: false}}, function(err, results){
+				if(err){
+					console.log("error", err);
+				}else{
+					res.json();
+				}
+			})
+		}, 
+
+		undoRemove: function(req, res){
+			Customers.update({_id: req.body._id}, {$set: {show: true}}, function(err, results){
+				if(err){
+					console.log("error", err);
+				}else{
+					res.json();
+				}
+			})
+		}, 
+
+		getAverageTime: function(req, res){
+			var today = new Date();
+		  today.setHours(0,0,0,0);
+		  var tomorrow = new Date(today.getTime() + 24 * 60 * 60 * 1000);
+			Customers.find({$and: [{completed: true}, {startTime:{$gte:today, $lt: tomorrow}}]}, function(err, results){
+				if(err){
+					console.log("error", err);
+				}else{
+					res.json(results);
+				}
+			})
 		}
+
 
 
 	

@@ -11,7 +11,10 @@ var CustomersSchema = new mongoose.Schema({
 	standByStartTime: Date,
 	standByWaitTime: {type: Date, default: Date.now},
 	endTime: Date,
-	completed: String,
+	completed: Boolean,
+	status: String,
+	totalWaitTime: String,
+	show: Boolean,
 });
 
 mongoose.model('Customers', CustomersSchema);

@@ -9,18 +9,21 @@ table.filter('range', function() {
   };
 });
 
-table.config(function($routeProvider, $locationProvider){
+table.config(function($routeProvider){
 
 	$routeProvider
 		.when('/', {
 			templateUrl: 'partials/home.html',
 		})
-		.when('/reserved',{
-			templateUrl: '../static/xml/reserved.xml',
+		.when('/completed',{
+			templateUrl: 'partials/completed.html',
+		})
+		.when('/record',{
+			templateUrl: 'partials/record.html',
 		})
 		.otherwise({
 			redirectTo: '/'
 		})
 
-		$locationProvider.html5Mode(true);
+		// $locationProvider.html5Mode(true);
 })

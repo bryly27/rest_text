@@ -26,7 +26,27 @@ module.exports = function(app) {
 
 	app.post("/home/checkIn", function(req, res){
 		home.checkIn(req, res);
-	})
+	});
+
+	app.post("/home/removeCustomer", function(req, res){
+		home.removeCustomer(req, res);
+	});
+
+	app.post("/home/undoCheckIn", function(req, res){
+		home.undoCheckIn(req, res);
+	});
+
+	app.post("/home/undoRemove", function(req, res){
+		home.undoRemove(req, res);
+	});
+
+	app.get("/home/getAverageTime", function(req, res){
+		home.getAverageTime(req, res);
+	});
+
+
+
+
 
 	
 
