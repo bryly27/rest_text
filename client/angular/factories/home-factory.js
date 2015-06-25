@@ -16,7 +16,7 @@ table.factory('homeFactory', function($http) {
 		if(data.phone){
 			data.phone = "+1" + data.phone;
 		};
-		data.completed = false;
+		data.completed = "waiting";
 		$http.post("/home/addCustomer", data).success(function(results){
 			callback(results);
 		})
@@ -24,6 +24,24 @@ table.factory('homeFactory', function($http) {
 
 	factory.updateWaitTime = function(callback){
 		$http.post("/home/updateWaitTime").success(function(){
+			callback();
+		})
+	}
+
+	factory.startStandBy = function(data, callback){
+		$http.post("/home/startStandBy", data).success(function(results){
+			callback(results);
+		})
+	}
+
+	factory.undoStandBy = function(data, callback){
+		$http.post("/home/undoStandBy", data).success(function(){
+			callback();
+		})
+	}
+
+	factory.checkIn = function(data, callback){
+		$http.post("/home/checkIn", data).success(function(){
 			callback();
 		})
 	}

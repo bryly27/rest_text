@@ -1,16 +1,5 @@
 table.controller('homeController', function($scope, $location, $route, homeFactory, localStorageService) {
 var socket = io.connect();
-	// $scope.admin_user = localStorageService.get('current_user');
-
-	// if(!localStorageService.get('current_user')){
-	// 	$location.path('/admin_login');
-	// }else{
-	// 	$location.path('/admin_home');
-	// }
-  // var edit_button = false;
-  // console.log(socket);
-
-
 
   getTodaysCustomers();
 
@@ -19,11 +8,10 @@ var socket = io.connect();
       $scope.customers = results;
       console.log(results);
     })
-  } 
+  }; 
 
   $scope.onlyNumbers = /^[0-9]+$/;
   $scope.onlyLetters = /^[a-zA-Z ]+$/;
-
 
   $scope.addCustomer = function(data){
     homeFactory.addCustomer(data, function(results){
@@ -32,19 +20,28 @@ var socket = io.connect();
       $scope.callStatus = results.callStatus;
       getTodaysCustomers();
     })
-  }
+  };
 
   socket.on('checkTime', function(){
     console.log('checking');
     homeFactory.updateWaitTime(function(results){
       getTodaysCustomers();
     })
-  })
+  });
 
   $scope.getTimeWaited = function(startTime, waitTime){
-    console.log('here');
-    console.log('start time', startTime);
-    console.log('wait time', waitTime);
+    // console.log('here');
+    // console.log('start time', startTime);
+    // console.log('wait time', waitTime);
+    var date1 = new Date(startTime);
+    var date2 = new Date(waitTime);
+    var diff = Math.abs(date1 - date2);
+    var minutes = Math.floor((diff/1000)/60);
+    return minutes;
+  };
+
+  $scope.getStandByTime = function(startTime, waitTime){
+    console.log('hello there');
     var date1 = new Date(startTime);
     var date2 = new Date(waitTime);
     var diff = Math.abs(date1 - date2);
@@ -52,34 +49,26 @@ var socket = io.connect();
     return minutes;
   }
 
-  // $scope.register = function(data){
-		// admin_factory.register(data, function(results){
-		// 	if(results.error){
-		// 		$scope.err = results.error;
-		// 	}else if(results.username){
-		// 		localStorageService.set('current_user', results.username);
-		// 		$location.path('/admin_home');
-		// 		$scope.new_user = null;
-		// 	}
-		// });
-  // };
 
-  // $scope.login = function(data){
-  // 	admin_factory.login(data, function(results){
-  // 		if(results.error){
-		// 		$scope.err = results.error;
-		// 	}else if(results.username){
-		// 		localStorageService.set('current_user', results.username);
-		// 		$location.path('/admin_home');
-		// 		$scope.user = null;
-		// 	}
-  // 	});
-  // };
+  $scope.startStandBy = function(data){
+    console.log(data);
+    homeFactory.startStandBy(data, function(results){
+      console.log('ljdklfjsdlf', results);
+      getTodaysCustomers();
+    })
+  };
 
-  // $scope.admin_logoff = function(){
-  // 	localStorageService.set('current_user', null);
-  // 	$location.path('/admin_login');
-  // };
+  $scope.undoStandBy = function(data){
+    homeFactory.undoStandBy(data, function(){
+      getTodaysCustomers();
+    })
+  };
+
+  $scope.checkIn = function(data){
+    homeFactory.checkIn(data, function(){
+      getTodaysCustomers();
+    })
+  }
 
   // $scope.add_con = function(data){
   // 	admin_factory.add_con(data,function(results){

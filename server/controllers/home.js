@@ -25,8 +25,8 @@ module.exports = (function() {
 		addCustomer: function(req, res){
 			var newCustomer = new Customers(req.body);
 			var result = {};
-			console.log(req.body);
-			console.log(req.body.phone);
+			// console.log(req.body);
+			// console.log(req.body.phone);
 			if(req.body.phone){
 				// req.body.phone = "+1"+req.body.phone;
 				if(req.body.callType === 'text'){
@@ -45,7 +45,7 @@ module.exports = (function() {
 					})
 				}else{
 					twilio.calls.create({
-						url: "http://54.153.106.234/rest_text",
+						url: "http://54.153.106.234/rest_text/reserved",
 						to: req.body.phone,
 						from: twilioNumber,
 					}, function(err, call){
@@ -83,8 +83,8 @@ module.exports = (function() {
 		  today.setHours(0,0,0,0);
 		  var tomorrow = new Date(today.getTime() + 24 * 60 * 60 * 1000);
 
-		  Customers.update({completed:false, startTime:{$gte:today, $lt: tomorrow}}, 
-		  	{$set: {waitTime: now}}, {multi: true}, function(err, results){
+		  Customers.update({$or:[{completed:"waiting"}, {completed:"standBy"}], startTime:{$gte:today, $lt: tomorrow}}, 
+		  	{$set: {waitTime: now, standByWaitTime: now}}, {multi: true}, function(err, results){
 		  	if(err){
 		  		console.log('error', err);
 		  	}else{
@@ -94,19 +94,77 @@ module.exports = (function() {
 
 
 	
+		},
+
+		startStandBy: function(req, res){
+			var result = {};
+			if(req.body.phone){
+				if(req.body.callType === 'text'){
+					twilio.messages.create({
+						to: req.body.phone,
+						from: twilioNumber,
+						body: "Your table is now ready at 'Restaurant Name'. Please check in at the front counter. Thank you",	
+					}, function(err, message){
+						if(err){
+							console.log('error', err);
+							result.callStatus = "Text did not go through";
+						}else{
+							result.callStatus = "Text has been sent";
+						}
+						update(result);
+					})
+				}else{
+					twilio.calls.create({
+						url: "http://54.153.106.234/rest_text/standBy",
+						to: req.body.phone,
+						from: twilioNumber,
+					}, function(err, call){
+						if(err){
+							console.log('error', err);
+							result.callStatus = "Call did not go through";
+						}else{
+							result.callStatus = "Call has been sent";
+						}
+						update(result);
+					})
+				}
+			}else{
+				update();
+			}
+
+			function update(){
+				var now = new Date();
+				Customers.update({_id: req.body._id}, {$set: {standByStartTime: now, completed:"standBy"}}, function(err, results){
+					if(err){
+						console.log('error', err);
+					}else{
+						// console.log(results);
+						res.json(result);
+					}
+				})
+			}
+		},
+
+		undoStandBy: function(req, res){
+			Customers.update({_id: req.body._id}, {$unset: {standByStartTime: ""}}, {$set:{completed:"waiting"}}, function(err, results){
+				if(err){
+					console.log("error", err);
+				}else{
+					console.log(results);
+					res.json();
+				}
+			})
+		}, 
+
+		checkIn: function(req, res){
+			Customers.update({_id: req.body._id}, {$set: {completed: "complete"}}, function(err, results){
+				if(err){
+					console.log("error", err);
+				}else{
+					res.json();
+				}
+			})
 		}
-
-
-
-		// get_cons: function(req, res){
-		// 	Con.find({}, function(err, results){
-		// 		if(err){
-		// 			console.log('error', err);
-		// 		}else{
-		// 			res.json(results)
-		// 		}
-		// 	})
-		// },
 
 
 	

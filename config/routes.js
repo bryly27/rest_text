@@ -14,6 +14,18 @@ module.exports = function(app) {
 
 	app.post("/home/updateWaitTime", function(req, res){
 		home.updateWaitTime(req, res);
+	});
+
+	app.post("/home/startStandBy", function(req, res){
+		home.startStandBy(req, res);
+	});
+
+	app.post("/home/undoStandBy", function(req, res){
+		home.undoStandBy(req, res);
+	});
+
+	app.post("/home/checkIn", function(req, res){
+		home.checkIn(req, res);
 	})
 
 	

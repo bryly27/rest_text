@@ -58,16 +58,17 @@
 
 
 
-						<tr ng-repeat="customer in customers" class="danger">
+						<tr ng-repeat="customer in customers" ng-class="{'danger': customer.completed === 'waiting', 'warning': customer.completed === 'standBy', 'success': customer.completed === 'complete'}">
 							<td>{{$index + 1}}</td>
 							<td>{{customer.name}}</td>
 							<td>{{customer.size}}</td>
 							<td>{{customer.phone}}</td>
-							<td><span>{{getTimeWaited(customer.startTime, customer.waitTime)}}</span></td>
+							<td>{{getTimeWaited(customer.startTime, customer.waitTime)}} mins</td>
 							<!-- <td ng-bind="getTimeWaited(customer.startTime, customer.waitTime)">{{customer.startTime}} min</td> -->
-							<td><input type="submit" ng-click="test_function(test)" value="Call/Text" class="btn btn-default"></td>
-							<td>5 min</td>
-							<td><input type="submit" value="Check In" class="btn btn-default"></td>
+							<td ng-show="!customer.standByStartTime"><input type="submit" ng-click="startStandBy(customer)" value="Call/Text" class="btn btn-default"></td>
+							<td ng-show="customer.standByStartTime"><input type="submit" ng-click="undoStandBy(customer)"value="Undo" class="btn btn-warning"></td>
+							<td><span ng-show="customer.standByStartTime">{{getStandByTime(customer.standByStartTime, customer.standByWaitTime)}} min</span></td>
+							<td><input type="submit" ng-click="checkIn(customer)" value="Check In" class="btn btn-success"></td>
 							<td>{{customer.note}}</td>
 							<td><input type="submit" value="Remove" class="btn btn-danger"></td>
 						<!-- 	<td>

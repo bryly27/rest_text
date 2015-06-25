@@ -5,12 +5,13 @@ var CustomersSchema = new mongoose.Schema({
 	phone: String,
 	size: String,
 	note: String, 
+	callType: String, 
 	startTime: {type: Date, default: Date.now},
 	waitTime: {type: Date, default: Date.now},
-	minutesWaited: String, 
-	standByTime: Date,
+	standByStartTime: Date,
+	standByWaitTime: {type: Date, default: Date.now},
 	endTime: Date,
-	completed: Boolean,
+	completed: String,
 });
 
 mongoose.model('Customers', CustomersSchema);
