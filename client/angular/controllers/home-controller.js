@@ -110,11 +110,12 @@ table.controller('homeController', function($scope, $location, $route, homeFacto
       }
 
       var average = Math.floor(sum/count);
-      if(isNan(average)){
+      if(average !== NaN){
         $scope.averageTime = average;
-      }else{        
-        $scope.averageTime = 0;
+      }else{
+        $scope.averageTime = "0";
       }
+
     })
   };
 
