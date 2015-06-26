@@ -53,7 +53,7 @@ table.controller('homeController', function($scope, $location, $route, homeFacto
 
 
   $scope.startStandBy = function(data){
-    console.log(data);
+    // console.log(data);
     homeFactory.startStandBy(data, function(results){
       // console.log('ljdklfjsdlf', results);
       getTodaysCustomers();
