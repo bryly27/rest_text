@@ -64,7 +64,7 @@
 
 
 
-						<tr ng-repeat="customer in customers | filter:searchName" ng-show="customer.show === true" ng-class="{'danger': customer.status === 'waiting', 'warning': customer.status === 'standBy', 'success': customer.status === 'complete'}">
+						<tr ng-repeat="customer in customers | filter:searchName | orderBy:'createdAt'" ng-show="customer.show === true" ng-class="{'danger': customer.status === 'waiting', 'warning': customer.status === 'standBy', 'success': customer.status === 'complete'}">
 							<td>{{$index + 1}}</td>
 							<td>{{customer.name}}</td>
 							<td>{{customer.size}}</td>

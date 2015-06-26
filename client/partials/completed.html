@@ -15,7 +15,7 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr ng-repeat="customer in customers" ng-show="customer.show === false" class="success">
+						<tr ng-repeat="customer in customers | orderBy:'createdAt'" ng-show="customer.show === false" class="success">
 							<td>{{$index + 1}}</td>
 							<td>{{customer.name}}</td>
 							<td>{{customer.size}}</td>

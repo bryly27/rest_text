@@ -15,6 +15,7 @@ var CustomersSchema = new mongoose.Schema({
 	status: String,
 	totalWaitTime: String,
 	show: Boolean,
+	createdAt: {type: Date, default: Date.now},
 });
 
 mongoose.model('Customers', CustomersSchema);
