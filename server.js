@@ -48,12 +48,6 @@ io.sockets.on("connection", function(socket){
 	}
 	setInterval(checkTime, 10000);
 
-	socket.on('disconnect', function() {
-    socketConnectTimeInterval = setInterval(function () {
-      socket.socket.reconnect();
-      if(socket.socket.connected) {clearInterval(socketConnectTimeInterval);}
-    }, 2000);
-  });
 
 })
 
