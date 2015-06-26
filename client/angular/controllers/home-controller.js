@@ -27,6 +27,7 @@ table.controller('homeController', function($scope, $location, $route, homeFacto
     // console.log('checking');
     homeFactory.updateWaitTime(function(results){
       getTodaysCustomers();
+      getAverageWaitTime();
     })
   });
 

@@ -46,7 +46,7 @@ io.sockets.on("connection", function(socket){
 	function checkTime(){
 		io.emit('checkTime');
 	}
-	setInterval(checkTime, 10000);
+	setInterval(checkTime, 5000);
 
 })
 
