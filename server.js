@@ -46,13 +46,13 @@ io.sockets.on("connection", function(socket){
 	function checkTime(){
 		io.emit('checkTime');
 	}
-	setInterval(checkTime, 5000);
+	setInterval(checkTime, 2000);
 
 	socket.on('disconnect', function() {
     socketConnectTimeInterval = setInterval(function () {
       socket.socket.reconnect();
       if(socket.socket.connected) {clearInterval(socketConnectTimeInterval);}
-    }, 3000);
+    }, 2000);
   });
 
 })
