@@ -110,46 +110,15 @@ table.controller('homeController', function($scope, $location, $route, homeFacto
       }
 
       var average = Math.floor(sum/count);
-      // console.log(average);
-      $scope.averageTime = average;
+      if(average === NaN){
+        $scope.averageTime = 0;
+      }else{        
+        $scope.averageTime = average;
+      }
     })
   };
 
 
-
-
-  // $scope.delete_con = function(data){
-  // 	admin_factory.delete_con(data, function(results){
-  // 		$route.reload();
-  // 	});
-  // };
-
-  // $scope.new_news = {photo_link: 'http://', date: new Date()};
-  // $scope.new_blog = {photo_link: 'http://', date: new Date()};
-
-  // $scope.add_news = function(data){
-  //   data.type = 'news';
-  //   admin_factory.add_news(data, function(results){
-  //     $route.reload();
-  //   });
-  // };
-
-  // admin_factory.get_news(function(results){
-  //   $scope.news = results;
-  // });
-
-  // $scope.delete_news = function(data){
-  //   admin_factory.delete_news(data, function(results){
-  //     $route.reload();
-  //   });
-  // };
-
-  // $scope.add_blog = function(data){
-  //   data.type = 'blog';
-  //   admin_factory.add_blog(data, function(results){
-  //     $route.reload();
-  //   });
-  // };
 
 
 
